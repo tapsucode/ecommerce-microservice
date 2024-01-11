@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: sale-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/sale
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #    database-platform: mysql
+  liquibase:
+    change-log: classpath:/master/changelog-master.xml
+
+  cloud:
+    function:
+      definition: createProductListener;updateProductListener;deleteProductListener;confirmOrderListener;cancelOrderListener;confirmPaymentOrderListener
+
+    stream:
+      bindings:
+        createProductListener-in-0:
+          destination:  product-create-inventory
+          binder: kafka
+        updateProductListener-in-0:
+          destination: product-update-inventory
+          binder: kafka
+        deleteProductListener-in-0:
+          destination: product-delete-inventory
+          binder: kafka
+        confirmOrderListener-in-0:
+          destination: confirm-order-inventory
+          binder: kafka
+        cancelOrderListener-in-0:
+          destination: cancel-order-inventory
+          binder: kafka
+        confirmPaymentOrderListener-in-0:
+          destination: confirm-payment-order-inventory
+          binder: kafka
+
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+

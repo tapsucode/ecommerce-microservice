@@ -1,0 +1,37 @@
+
+spring:
+  application:
+    name: product-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/product
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #    database-platform: mysql
+  liquibase:
+    change-log: classpath:/master/changelog-master.xml
+
+  cloud:
+    stream:
+      bindings:
+        createProduct-out-0:
+          destination: product-create-inventory
+          binder: kafka
+        updateProduct-out-0:
+          destination: product-update-inventory
+          binder: kafka
+        deleteProduct-out-0:
+          destination: product-delete-inventory
+          binder: kafka
+
+server:
+  port: 8070
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+

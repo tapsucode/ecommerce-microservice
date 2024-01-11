@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: product-reviews
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/productreviews
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #    database-platform: mysql
+  liquibase:
+    change-log: classpath:/master/changelog-master.xml
+
+
+server:
+  port: 8060
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+

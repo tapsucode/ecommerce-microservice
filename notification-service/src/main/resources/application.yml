@@ -1,0 +1,29 @@
+
+spring:
+  application:
+    name: notification-service
+  cloud:
+    function:
+      definition: accountConfirmListener;createOrderListener
+    stream:
+      bindings:
+        accountConfirmListener-in-0:
+          destination: account-confirmation-notification
+          binder: kafka
+        createOrderListener-in-0:
+          destination: create-order-notification
+          binder: kafka
+mail:
+  host: smtp.gmail.com
+  post: 587
+  username: lahoavaco95@gmail.com
+  password: toiggoahftuynndm
+  protocol: smtp
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+server:
+  port: 8040

@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: order-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/order
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  #    database-platform: mysql
+  liquibase:
+    change-log: classpath:/master/changelog-master.xml
+
+  cloud:
+    stream:
+      bindings:
+        createOrderCOD-out-0:
+          destination: confirm-order-inventory
+          binder: kafka
+        createOrder-out-0:
+          destination: create-order-notification
+          binder: kafka
+        cancelOrder-out-0:
+          destination: cancel-order-inventory
+          binder: kafka
+        confirmPaymentOrder-out-0:
+          destination: confirm-payment-order-inventory
+          binder: kafka
+        confirmPaymentOrderListener-in-0:
+          destination: confirm-payment-order
+          binder: kafka
+        failPaymentOrderListener-in-0:
+          destination: fail-payment-order
+          binder: kafka
+    function:
+      definition: confirmPaymentOrderListener;failPaymentOrderListener
+server:
+  port: 8050
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
